@@ -1,0 +1,27 @@
+# Save Appliance
+
+- zerofree: false
+- kameleon_helpers_url: "https://raw.githubusercontent.com/oar-team/kameleon-helpers/master/"
+
+- export_appliance_script: $$kameleon_cwd/export_appliance.py
+
+- download_kameleon_helpers:
+  - download_file_local:
+    - $$kameleon_helpers_url/export_appliance.py
+    - $$export_appliance_script
+
+- save_appliance:
+  - check_cmd_local: qemu-img
+  - check_cmd_local: guestfish
+  - exec_local: |
+      if [ "$$zerofree" = "true" ]; then
+        EXPORT_OPTS="--zerofree"
+      else
+        EXPORT_OPTS=""
+      fi
+  - exec_local: |
+      python $$export_appliance_script $$qemu_image_disk \
+        -o $$output_filename \
+        --formats $$output_formats \
+        --tar-compression-level $$tar_compression_level \
+        --tar-excludes $$tar_excludes $EXPORT_OPTS

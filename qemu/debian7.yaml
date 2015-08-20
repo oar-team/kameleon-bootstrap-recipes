@@ -1,0 +1,47 @@
+#==============================================================================
+# vim: softtabstop=2 shiftwidth=2 expandtab fenc=utf-8 cc=81 tw=80
+#==============================================================================
+#
+# DESCRIPTION: Debian 7 (Wheezy) base system built with qemu-kvm.
+#
+#==============================================================================
+---
+extend: base.yaml
+# Global variables use by Kameleon engine and the steps
+global:
+  # Distribution
+  distrib: debian
+  kernel_arch: amd64
+  release: wheezy
+
+  ## System variables. Required by kameleon engine
+  # Include specific steps
+  include_steps:
+    - $$distrib/$$release
+    - $$distrib
+    - "fedora"
+
+  bootstrap_requirements: parted e2fsprogs debootstrap extlinux
+
+  bootstrap_packages: >
+    linux-image-$$kernel_arch openssh-server isc-dhcp-client netbase net-tools
+    acpid acpi-support-base ifupdown
+
+# Bootstrap the new system and create the 'in_context'
+bootstrap:
+  - "@base"
+  - debootstrap:
+    - include_pkg: $$bootstrap_packages
+    - release: $$release
+    - arch: $$arch
+    - repository: $$apt_repository
+    - variant: minbase  # default|minbase|buildd|fakechroot|scratchbox
+  - reboot_qemu
+
+#== Install and configuration steps
+setup:
+  - "@base"
+
+#== Export the generated appliance in the format of your choice
+export:
+  - "@base"

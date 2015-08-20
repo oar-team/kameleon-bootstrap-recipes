@@ -1,0 +1,2 @@
+- configure_system:
+  - exec_in: echo "Nothing to do !"

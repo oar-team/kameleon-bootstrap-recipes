@@ -1,0 +1,26 @@
+#==============================================================================
+# vim: softtabstop=2 shiftwidth=2 expandtab fenc=utf-8 cc=81 tw=80
+#==============================================================================
+#
+# DESCRIPTION: Debian 8 (Jessie) base system built with qemu-kvm.
+#
+#==============================================================================
+---
+extend: debian7.yaml
+
+global:
+  # Distribution
+  release: jessie
+
+  bootstrap_packages: >
+    linux-image-$$kernel_arch openssh-server isc-dhcp-client netbase net-tools
+    acpid acpi-support-base ifupdown systemd systemd-sysv
+
+bootstrap:
+  - "@base"
+
+setup:
+  - "@base"
+
+export:
+  - "@base"

@@ -1,0 +1,22 @@
+# Minimal Install
+
+- configure_yum:
+  - exec_in: echo $$release > /etc/yum/vars/releasever
+  - exec_in: yum-config-manager --save --setopt=fedora.skip_if_unavailable=true
+  - exec_in: yum repolist all
+
+- update_system:
+  - exec_in: yum update --releasever=$$release yum -y
+  - exec_in: yum upgrade -y --releasever=$$release
+  - exec_in: yum clean all -y
+  - exec_in: yum distro-sync --releasever=$$release -y
+
+- install_packages:
+  - exec_in: yum -y reinstall iputils
+  - exec_in: yum install -y $$setup_packages 2>&1
+
+- generate_new_initramfs:
+  - exec_out: rm -f $$rootfs/boot/initr*
+  - exec_out: rm -f $$rootfs/boot/vmlinuz*rescue*
+  - exec_in: KERNEL_RELEASE=`ls -1rv /boot/vmlinuz* | head -n 1 | sed -e 's/^.*vmlinuz-//'`
+  - exec_in: dracut --force "/boot/initramfs-$KERNEL_RELEASE.img" "$KERNEL_RELEASE"
