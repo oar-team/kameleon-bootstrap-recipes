@@ -19,6 +19,7 @@ global:
 
   bootstrap_requirements: parted e2fsprogs curl
   bootstrap_packages: mkinitcpio openssh dhcpcd
+  setup_packages: linux openssh dhcpcd
 
 bootstrap:
   - "@base"
