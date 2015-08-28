@@ -7,32 +7,33 @@
 #==============================================================================
 ---
 extend: base.yaml
+
 # Global variables use by Kameleon engine and the steps
 global:
   # Distribution
   distrib: archlinux
+
+  mirror_base_url: http://mir.archlinux.fr
 
   ## System variables. Required by kameleon engine
   # Include specific steps
   include_steps:
     - $$distrib
 
-  bootstrap_requirements: parted e2fsprogs curl
-  bootstrap_packages: mkinitcpio openssh dhcpcd
-  setup_packages: linux openssh dhcpcd
+  bootstrap_requirements: parted e2fsprogs curl lynx
+  bootstrap_packages: mkinitcpio openssh dhcpcd linux systemd-sysvcompat iputils net-tools
+  setup_packages: linux openssh dhcpcd iputils
 
 bootstrap:
   - "@base"
   - arch_bootstrap:
-    - bootstrap_image: http://mir.archlinux.fr/iso/2015.08.01/archlinux-bootstrap-2015.08.01-$${arch}.tar.gz
-    - mirror: http://mir.archlinux.fr/\$repo/os/\$arch
     - include_pkgs: $$bootstrap_packages
   - reboot_qemu
 
-#== Install and configuration steps
+# Install and configuration steps
 setup:
   - "@base"
 
-#== Export the generated appliance in the format of your choice
+# Export the generated appliance in the format of your choice
 export:
   - "@base"

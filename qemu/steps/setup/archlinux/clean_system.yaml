@@ -10,3 +10,7 @@
   - exec_in: paccache -rk0 >/dev/null 2>&1
   - exec_in: pacman-optimize
   - exec_in: rm -r /var/lib/pacman/sync/*
+
+- clean_unsed_initramfs:
+  - exec_in: rm -f /boot/initramfs*tiny*
+  - exec_in: rm -f /boot/initramfs*fallback*
