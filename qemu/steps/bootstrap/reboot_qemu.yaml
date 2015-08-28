@@ -54,6 +54,7 @@
       append initrd=../`basename $$rootfs/boot/init*` root=UUID=`blkid -s UUID -o value $${disk_device}1` ro console=tty0 console=ttyS0,115200n8 selinux=0
 
 - umount_all:
+  - exec_out: sync
   - umount_out: $$rootfs/sys
   - umount_out: $$rootfs/proc
   - umount_out: $$rootfs/dev/pts
