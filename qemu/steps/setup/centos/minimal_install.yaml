@@ -16,7 +16,7 @@
   - exec_in: yum install -y $$setup_packages 2>&1
 
 - generate_new_initramfs:
-  - exec_out: rm -f $$rootfs/boot/initr*
-  - exec_out: rm -f $$rootfs/boot/vmlinuz*rescue*
+  - exec_in: rm -f /boot/initr*
+  - exec_in: rm -f /boot/vmlinuz*rescue*
   - exec_in: KERNEL_RELEASE=`ls -1rv /boot/vmlinuz* | head -n 1 | sed -e 's/^.*vmlinuz-//'`
   - exec_in: dracut --force "/boot/initramfs-$KERNEL_RELEASE.img" "$KERNEL_RELEASE"
