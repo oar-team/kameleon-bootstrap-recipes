@@ -18,6 +18,7 @@ env:
 
 # Global variables use by Kameleon engine and the steps
 global:
+  root_password: kameleon
   # Distribution
   arch: x86_64
   hostname: kameleon-$$distrib
