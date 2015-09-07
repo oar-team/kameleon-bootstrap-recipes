@@ -1,6 +1,5 @@
 - boot_timeout: 30
 - shutdown_timeout: 10
-- boot2kameleon: true
 
 
 - start_qemu_vm:
@@ -15,12 +14,6 @@
         BOOT_TIMEOUT=$(($$boot_timeout*2))
       fi
   - exec_local: |
-      if [ "$$boot2kameleon" = "true" ]; then
-        CDROM="-cdrom $$kameleon_cwd/boot2kameleon.iso"
-      else
-        CDROM=""
-      fi
-  - exec_local: |
         if [ -f "vm_state_to_load.txt" ]
         then
             SAVED_STATE="$(cat vm_state_to_load.txt)"
@@ -32,9 +25,7 @@
         VNC_PORT=$(( $(__find_free_port 5900 5910) - 5900 ))
         echo "VNC port: $VNC_PORT"
   - exec_local: |
-        qemu-system-$$qemu_arch  \
-          $ENABLE_KVM \
-          $CDROM \
+        qemu-system-$$qemu_arch $ENABLE_KVM \
           -drive file="$$qemu_image_disk",cache=unsafe,media=disk,if=virtio,id=drive0 \
           -smp $${qemu_cpu} \
           -m $$qemu_memory_size \
