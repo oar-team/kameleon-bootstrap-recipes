@@ -13,8 +13,10 @@ global:
   # Distribution
   release: 21
 
-  mirror_url: http://mirrors.kernel.org/fedora/releases/$$release/Server/$$arch/
-  release_packages: fedora-release-$$release fedora-repos-$$release
+  mirror_url: http://mirrors.ircam.fr/pub/fedora/linux/releases/$$release/Server/$$arch/os/
+  iso_url: http://mirrors.ircam.fr/pub/fedora/linux/releases/$$release/Server/$$arch/iso/$$iso_filename
+
+  iso_filename: Fedora-Server-netinst-$${arch}-$${release}.iso
 
 # Bootstrap the new system and create the 'in_context'
 bootstrap:

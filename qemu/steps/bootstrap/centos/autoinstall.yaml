@@ -1,0 +1,91 @@
+
+- floopy_disk: $$kameleon_cwd/floopy_disk.img
+- qemu_sendkeys_script: $$kameleon_data_dir/qemu-sendkeys.rb
+- socat_monitor: socat - UNIX-CONNECT:$$qemu_monitor_socket
+
+- create_ks_floopy_disk:
+  - exec_local: echo "Creating a floopy disk image"
+  - exec_local: dd if=/dev/zero of="$$floopy_disk" bs=1k count=1440 2>&1
+
+- copy_kickstart_file_to_floopy_disk:
+  - exec_local: echo "Formating the floopy disk image and copying the kickstart file"
+  - write_local:
+    - $$kameleon_cwd/guestfish_script
+    - |
+      run
+      mkfs vfat /dev/sda
+      mount /dev/sda /
+      upload $$kickstart_path /ks.cfg
+  - exec_local: cat $$kameleon_cwd/guestfish_script | guestfish -a "$$floopy_disk"
+
+- boot_timeout: 5
+
+- start_qemu_vm:
+  - check_cmd_local: qemu-system-$$qemu_arch
+  - exec_local: echo "Starting qemu..."
+  - exec_local: |
+      if [ "$$qemu_enable_kvm" = "true" ]; then
+        ENABLE_KVM="-enable-kvm -cpu host"
+        BOOT_TIMEOUT=$$boot_timeout
+      else
+        BOOT_TIMEOUT=$(($$boot_timeout*2))
+      fi
+  - exec_local: |
+      # Find empty VNC port
+      VNC_PORT=$(( $(__find_free_port 5900 5910) - 5900 ))
+      echo "VNC port: $VNC_PORT"
+  - exec_local: |
+      qemu-system-$$qemu_arch $ENABLE_KVM \
+        -cdrom "$$iso_path" \
+        -fda "$$floopy_disk" \
+        -hda $$qemu_image_disk \
+        -smp $${qemu_cpu} \
+        -m $$qemu_memory_size \
+        -rtc base=localtime \
+        -net nic,model=virtio -net user \
+        -monitor unix:$$qemu_monitor_socket,server,nowait \
+        -pidfile $$qemu_pidfile \
+        -daemonize -no-reboot \
+         -boot order=d
+  - exec_local: |
+      TIMEOUT=$(( $(date +%s) + $BOOT_TIMEOUT ))
+      until timeout 1 [ $(date +%s) -gt $TIMEOUT ];
+      do
+        echo -en "\rWaiting for VM to become available : ($(( TIMEOUT - $(date +%s) ))s)"
+        sleep 1
+      done
+      echo ""
+  - check_cmd_local: socat
+  - exec_local: ruby $$qemu_sendkeys_script "<tab> text net.ifnames=0 biosdevname=0 " | $$socat_monitor
+  - exec_local: ruby $$qemu_sendkeys_script "ks=hd:fd0:/ks.cfg<kp_enter>" | $$socat_monitor
+
+- wait_vm_to_shutdown:
+  - exec_local: |
+      if [ -f $$qemu_pidfile ]; then
+        _QEMU_PID=$(cat $$qemu_pidfile)
+        if ps -p $_QEMU_PID > /dev/null; then
+          echo "Waiting for the autoinstall process to finished"
+          echo "Run 'vncviewer :$VNC_PORT' to connect to the vm"
+          while ps -p $_QEMU_PID > /dev/null;
+          do
+            sleep 2
+          done
+        fi
+      fi
+  - on_clean:
+    - exec_local: |
+        if [ -f $$qemu_pidfile ]; then
+          _QEMU_PID=$(cat $$qemu_pidfile)
+          if ps -p $_QEMU_PID > /dev/null; then
+            if [ -S $$qemu_monitor_socket ]; then
+              echo "  ~> Failed"
+            fi
+            echo "Killing QEMU (pid: $_QEMU_PID)..."
+            kill -9 "$_QEMU_PID"
+          else
+            if [ -S $$qemu_monitor_socket ]; then
+              echo "  ~> Done"
+            fi
+          fi
+          rm -f $$qemu_pidfile
+        fi

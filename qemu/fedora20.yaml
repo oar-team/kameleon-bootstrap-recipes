@@ -6,7 +6,7 @@
 #
 #==============================================================================
 ---
-extend: base.yaml
+extend: centos6.yaml
 
 # Global variables use by Kameleon engine and the steps
 global:
@@ -21,27 +21,16 @@ global:
     - $$distrib
     - "centos"
 
-  bootstrap_requirements: parted e2fsprogs yum rpm lynx extlinux curl
+  # archives.fedoraproject.org is too slow
+  mirror_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Everything/$$arch/os/
+  iso_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Fedora/$$arch/iso/$$iso_filename
 
-  bootstrap_packages: findutils util-linux net-tools dhclient openssh-server
-
+  iso_filename: Fedora-$${release}-$${arch}-netinst.iso
   setup_packages: kernel dracut dracut-kernel
-
-  mirror_url: http://archives.fedoraproject.org/pub/archive/fedora/linux/releases/$$release/Fedora/$$arch
-
-  release_packages: fedora-release-$$release
 
 # Bootstrap the new system and create the 'in_context'
 bootstrap:
   - "@base"
-  - yum_bootstrap:
-    - mirror_packages_url: $$mirror_url/os/Packages/f/
-    - release_packages: $$release_packages
-    - include_pkgs: yum $$bootstrap_packages
-  - init_pxeboot:
-    - pxe_initrd_url: $$mirror_url/os/images/pxeboot/initrd.img
-    - pxe_vmlinuz_url: $$mirror_url/os/images/pxeboot/vmlinuz
-  - reboot_qemu
 
 # Install and configuration steps
 setup:

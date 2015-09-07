@@ -13,9 +13,6 @@ global:
   # Distribution
   release: 22
 
-  mirror_url: http://mirrors.kernel.org/fedora/releases/$$release/Server/$$arch/
-  release_packages: fedora-release-$$release fedora-repos-$$release
-
 # Bootstrap the new system and create the 'in_context'
 bootstrap:
   - "@base"

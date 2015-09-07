@@ -1,0 +1,12 @@
+- download_iso_install:
+  - download_file_local:
+    - $$iso_url
+    - $$iso_path
+
+- copy_kickstart:
+  - exec_local: cp $$base_kickstart_path $$kickstart_path
+
+- customize_kickstart:
+  - exec_local: sed -i s'|rootpw\(.*\)|rootpw $$root_password|'g $$kickstart_path
+  - exec_local: sed -i s'|repo --name=base\(.*\)|repo --name=base --baseurl=$$mirror_url|'g $$kickstart_path
+  - exec_local: sed -i s'|url --url=\(.*\)|url --url=$$mirror_url|'g $$kickstart_path
