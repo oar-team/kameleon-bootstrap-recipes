@@ -12,7 +12,7 @@ extend: centos6.yaml
 global:
   # Distribution
   release: 7
-  iso_filename: CentOS-7-$$arch}-NetInstall-1503.iso
+  iso_filename: CentOS-7-$${arch}-NetInstall-1503.iso
 
 # Bootstrap the new system and create the 'in_context'
 bootstrap:
