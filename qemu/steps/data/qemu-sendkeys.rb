@@ -76,7 +76,7 @@ class Main
   end
 
   def sendkey(qemu_key_name)
-    if qemu_key_name == qemu_key_name.upcase
+    if qemu_key_name =~ /[A-Za-z]/ && qemu_key_name == qemu_key_name.upcase
       key = "shift-#{qemu_key_name.downcase}"
     else
       key = qemu_key_name
