@@ -31,7 +31,7 @@
           -m $$qemu_memory_size \
           -rtc base=localtime \
           -net nic,model=virtio -net user \
-          -redir tcp:${SSH_FWD_PORT}::22 \
+          -redir tcp:$$qemu_ssh_port::22 \
           -monitor unix:$$qemu_monitor_socket,server,nowait \
           -pidfile $$qemu_pidfile \
           -daemonize -vnc :$VNC_PORT $LOADVM
