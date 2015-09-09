@@ -11,10 +11,7 @@ for RECIPE_PATH in `ls qemu/*.yaml`; do
 
         RECIPE_NAME=$(basename $RECIPE_PATH .yaml)
 
-        kameleon build $ROOT_PROJECT/$RECIPE_PATH \
-            --build-path $BUILD_PATH \
-            --cache-archive-compression=xz --enable-cache \
-             --script
+        kameleon build $ROOT_PROJECT/$RECIPE_PATH --build-path $BUILD_PATH --script
 
         if [ $? -eq 0 ]; then
             mkdir -p $ROOTFS_PATH
