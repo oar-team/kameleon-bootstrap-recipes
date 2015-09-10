@@ -7,7 +7,7 @@
 #==============================================================================
 ---
 # Load qemu checkpoint
-checkpoint: qemu.yaml
+checkpoint: simple.yaml
 # Loads some helpful aliases (this files are located in steps/aliases/ directory)
 aliases: defaults.yaml
 
@@ -56,6 +56,11 @@ global:
     ./var/tmp/* ./tmp/* ./var/log/* ./dev/* ./proc/* ./run/*
     ./sys/* ./root/.rpmdb ./boot/extlinux ./boot/grub ./boot/grub2
 
+  http_directory: $$kameleon_cwd/http_dir
+  http_script: $$kameleon_cwd/simple_http_server.py
+  http_port: 15364
+  http_pid:  $$kameleon_cwd/http.pid
+
   ssh_config_file: $$kameleon_cwd/ssh_config
   out_context:
     cmd: ssh -F $$ssh_config_file $${kameleon_recipe_name} -t /bin/bash
@@ -67,13 +72,14 @@ global:
     workdir: /root/kameleon_workdir
     proxy_cache: 10.0.2.2
 
-  kernel_args: "net.ifnames=0 console=tty0 console=ttyS0,115200n8 selinux=0"
-
 # Bootstrap the new system and create the 'in_context'
 bootstrap:
+  - enable_checkpoint
+  - download_kameleon_helpers
   - download_iso
   - prepare_disk
-  - prepare_netinstall
+  - prepare_autoinstall
+  - start_http_server
   - autoinstall
   - prepare_appliance
   - start_qemu

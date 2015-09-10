@@ -1,0 +1,13 @@
+- run_http_server:
+  - exec_local: python $$http_script --root $$http_directory --bind 0.0.0.0 --port $$http_port --daemon --pid $$http_pid
+  - on_bootstrap_clean:
+    - exec_local: |
+        if [ -f $$http_pid ]; then
+          HTTP_PID=$(cat $$http_pid)
+          if ps -p $HTTP_PID > /dev/null; then
+              echo "Killing HTTP server (pid: $HTTP_PID)..."
+              kill -9 "$HTTP_PID"
+              rm -f $$http_pid
+          fi
+          rm -f $$http_pid
+        fi
