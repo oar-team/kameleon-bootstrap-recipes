@@ -71,6 +71,7 @@ global:
 
 # Bootstrap the new system and create the 'in_context'
 bootstrap:
+  - download_iso
   - prepare_disk
   - prepare_netinstall
   - autoinstall
