@@ -76,19 +76,23 @@ class Main
   end
 
   def sendkey(qemu_key_name)
-    if qemu_key_name =~ /[A-Za-z]/ && qemu_key_name == qemu_key_name.upcase
-      key = "shift-#{qemu_key_name.downcase}"
+    if qemu_key_name == "wait"
+      sleep 1
     else
-      key = qemu_key_name
+      if qemu_key_name =~ /[A-Za-z]/ && qemu_key_name == qemu_key_name.upcase
+        key = "shift-#{qemu_key_name.downcase}"
+      else
+        key = qemu_key_name
+      end
+      qemu_cmd = "sendkey #{key}"
+      if command
+        system "echo '#{qemu_cmd}' | #{command}"
+      else
+        puts qemu_cmd
+        $stdout.flush             # important when we are piped
+      end
+      sleep delay_s
     end
-    qemu_cmd = "sendkey #{key}"
-    if command
-      system "echo '#{qemu_cmd}' | #{command}"
-    else
-      puts qemu_cmd
-      $stdout.flush             # important when we are piped
-    end
-    sleep delay_s
   end
 
   PATTERN = /
