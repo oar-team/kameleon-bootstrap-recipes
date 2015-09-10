@@ -19,7 +19,6 @@ global:
   iso_path: $$kameleon_cwd/$${distrib}.iso
 
   base_kickstart_path: $$kameleon_data_dir/$${distrib}$${release}-ks.cfg
-  kickstart_path: $$kameleon_cwd/ks.cfg
 
 # Bootstrap the new system and create the 'in_context'
 bootstrap:
