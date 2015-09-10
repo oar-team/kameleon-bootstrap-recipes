@@ -1,0 +1,17 @@
+- copy_kickstart_file_to_http_directory:
+  - exec_local: mkdir -p $$http_directory
+  - exec_local: cp $$base_kickstart_path $$http_directory/archlinux-kickstart.sh
+
+- write_boot_command:
+  - exec_local: |
+      if [ "$$arch" = "x86_64" ]; then
+        SELECT_BOOT_ENTRY="<kp_enter><down><kp_enter>"
+      else
+        SELECT_BOOT_ENTRY="<down><kp_enter><down><kp_enter>"
+      fi
+      BOOT_WAIT="$(printf '<wait>%.0s' {1..15})"
+  - write_local:
+    - $$kameleon_cwd/boot_command
+    - >
+      ${SELECT_BOOT_ENTRY}${BOOT_WAIT}<kp_enter>
+      curl -sSL http://10.0.2.2:$$http_port/archlinux-kickstart.sh | sh<kp_enter>
