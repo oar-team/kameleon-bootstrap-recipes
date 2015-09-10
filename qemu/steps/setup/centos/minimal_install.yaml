@@ -1,2 +1,4 @@
-- configure_system:
-  - exec_in: echo "Nothing to do !"
+
+- set_root_password:
+  - exec_in: echo -n 'root:$$root_password' | chpasswd
+

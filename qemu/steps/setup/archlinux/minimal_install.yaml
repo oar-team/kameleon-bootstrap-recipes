@@ -1,4 +1,7 @@
 
+- set_root_password:
+  - exec_in: echo -n 'root:$$root_password' | chpasswd
+
 - do_upgrade:
   - exec_in: pacman -Syy --noconfirm --force
   - exec_in: pacman -Su --noconfirm --force
