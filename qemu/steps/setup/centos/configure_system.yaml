@@ -7,10 +7,7 @@
 - compress_cracklib:
   - exec_in: test ! -f $$cracklib_path || gzip -9 $$cracklib_path
 
-- enable_sshd:
-  - exec_in: chkconfig sshd on
-
-- selinux: permissive
+- selinux: disabled
 - selinuxtype: targeted
 
 - configure_selinux:
