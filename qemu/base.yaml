@@ -86,7 +86,6 @@ bootstrap:
 
 # Install and configuration steps
 setup:
-  - enable_checkpoint
   - configure_system
   - clean_system
 

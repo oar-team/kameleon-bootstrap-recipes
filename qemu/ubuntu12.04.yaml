@@ -12,6 +12,8 @@ global:
   # Distribution
   distrib: ubuntu
   release: precise
+  release_number: 12.04
+  iso_version: $${release_number}
 
   ## System variables. Required by kameleon engine
   # Include specific steps
@@ -20,9 +22,14 @@ global:
     - $$distrib
     - "debian"
 
-  bootstrap_packages: >
-    linux-image-generic openssh-server isc-dhcp-client netbase net-tools
-    ifupdown
+  iso_filename: $${distrib}-$${release_number}.5-server-$${kernel_arch}.iso
+  iso_url: http://releases.ubuntu.com/$$release_number/$$iso_filename
+  iso_path: $$kameleon_cwd/$${distrib}.iso
+
+  iso_url: http://archive.ubuntu.com/ubuntu/dists/$${release}-updates/main/installer-$${kernel_arch}/current/images/trusty-netboot/mini.iso
+
+  base_preseed_path: $$kameleon_data_dir/$${distrib}-$${release}-preseed.cfg
+
 
 bootstrap:
   - "@base"

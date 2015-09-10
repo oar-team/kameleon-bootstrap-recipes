@@ -11,10 +11,8 @@ extend: debian7.yaml
 global:
   # Distribution
   release: jessie
-
-  bootstrap_packages: >
-    linux-image-$$kernel_arch openssh-server isc-dhcp-client netbase net-tools
-    acpid acpi-support-base ifupdown systemd systemd-sysv
+  release_number: 8.2.0
+  iso_location: release
 
 bootstrap:
   - "@base"

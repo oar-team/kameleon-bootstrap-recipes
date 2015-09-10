@@ -1,2 +1,6 @@
-- configure_system:
-  - exec_in: echo "Nothing to do !"
+- remove_random_seed:
+  - exec_in: echo "Removing random-seed so it's not the same in every image."
+  - exec_in: rm -f /var/lib/random-seed
+
+- remove_kameleon_user:
+  - exec_in: userdel -r kameleon
