@@ -13,15 +13,15 @@ global:
   distrib: debian
   kernel_arch: amd64
   release: wheezy
-  release_number: 7.9.0
 
-  iso_filename: debian-$${release_number}-$${kernel_arch}-netinst.iso
-  iso_location: archive
-  iso_url: http://cdimage.debian.org/cdimage/$$iso_location/$$release_number/$$kernel_arch/iso-cd/$$iso_filename
-  iso_path: $$kameleon_cwd/$${distrib}.iso
+  iso_filename: debian-jessie-$${arch}-live.iso
+  iso_url: http://kameleon.imag.fr/iso/$$iso_filename
+  iso_path: $$kameleon_cwd/$$iso_filename
 
-  base_preseed_path: $$kameleon_data_dir/$${distrib}-$${release}-preseed.cfg
-  preseed_path: $$kameleon_cwd/preseed.cfg
+  autoinstall_script_path: $$kameleon_data_dir/debian-autoinstall.sh
+  repository: http://http.debian.net/debian/
+  bootstrap_packages: locales openssh-server linux-image-$$kernel_arch
+  boot_timeout: 15
 
 # Bootstrap the new system and create the 'in_context'
 bootstrap:

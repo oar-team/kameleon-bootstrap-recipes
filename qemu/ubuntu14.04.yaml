@@ -12,6 +12,7 @@ global:
   # Distribution
   release: trusty
 
+
 bootstrap:
   - "@base"
 
