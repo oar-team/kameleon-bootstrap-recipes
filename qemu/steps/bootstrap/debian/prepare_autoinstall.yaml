@@ -1,4 +1,4 @@
-- copy_preseed_file_to_http_directory:
+- copy_autoinstall_script_to_http_directory:
   - exec_local: mkdir -p $$http_directory
   - exec_local: cp $$autoinstall_script_path $$http_directory/autoinstall.sh
 
