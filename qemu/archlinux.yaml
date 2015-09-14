@@ -19,13 +19,14 @@ global:
   include_steps:
     - $$distrib
 
-  mirror_base_url: http://mir.archlinux.fr
-  mirror_url: $$mirror_base_url/\$repo/os/\$arch
-  iso_url: $$mirror_base_url/iso/latest/archlinux-2015.09.01-dual.iso
-  iso_path: $$kameleon_cwd/$${distrib}.iso
+  mirror_url: http://mir.archlinux.fr
+  iso_filename: debian-jessie-$${arch}-live.iso
+  iso_url: http://kameleon.imag.fr/iso/$$iso_filename
+  iso_path: $$kameleon_cwd/$$iso_filename
 
-  base_kickstart_path: $$kameleon_data_dir/$${distrib}-kickstart.sh
-  # boot_timeout: 5
+  autoinstall_script_path: $$kameleon_data_dir/$${distrib}-autoinstall.sh
+  bootstrap_packages: base mkinitcpio dhcpcd linux systemd-sysvcompat iputils net-tools syslinux openssh vim
+  boot_timeout: 15
 
 bootstrap:
   - "@base"
