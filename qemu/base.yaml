@@ -87,6 +87,7 @@ bootstrap:
 # Install and configuration steps
 setup:
   - configure_system
+  - minimal_install
   - clean_system
 
 # Export the generated appliance in the format of your choice
