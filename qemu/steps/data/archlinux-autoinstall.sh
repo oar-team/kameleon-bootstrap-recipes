@@ -2,7 +2,7 @@
 
 set -e
 
-die() {
+fail() {
   echo "$@"
   exit 1
 }
@@ -67,18 +67,6 @@ arch-chroot $MNT pacman-key --populate archlinux
 # Update and install packages
 arch-chroot $MNT pacman --noconfirm -Suy --force $PACKAGES
 
-# Generate minimal initramfs
-# cat > $MNT/etc/mkinitcpio.conf <<EOF
-# MODULES="ahci sd_mod ext4"
-# BINARIES="fsck fsck.ext4"
-# HOOKS="systemd modconf block keymap filesystems keyboard"
-# EOF
-
-# rm -f $MNT/boot/initramfs*
-
-# arch-chroot $MNT mkinitcpio -g /boot/initramfs-linux-tiny.img -k $(ls $MNT/usr/lib/modules | head -n 1)
-
-
 #Install Boot Loader
 mkdir -p $MNT/boot/syslinux
 extlinux --install $MNT/boot/syslinux
@@ -92,11 +80,11 @@ PATHS=("/usr/share/syslinux/mbr.bin"
        "/usr/lib/syslinux/mbr/mbr.bin"
        "/usr/lib/EXTLINUX/mbr.bin")
 for element in "${PATHS[@]}"
-do
-if [ -f "$element" ]; then
-  MBR_PATH="$element"
-  break
-fi
+  do
+  if [ -f "$element" ]; then
+    MBR_PATH="$element"
+    break
+  fi
 done
 
 if [ "$MBR_PATH" == "" ]; then

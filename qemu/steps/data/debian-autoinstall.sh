@@ -86,10 +86,10 @@ PATHS=("/usr/share/syslinux/mbr.bin"
        "/usr/lib/EXTLINUX/mbr.bin")
 for element in "${PATHS[@]}"
 do
-if [ -f "$element" ]; then
-  MBR_PATH="$element"
-  break
-fi
+  if [ -f "$element" ]; then
+    MBR_PATH="$element"
+    break
+  fi
 done
 
 if [ "$MBR_PATH" == "" ]; then
