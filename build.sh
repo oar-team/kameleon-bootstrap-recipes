@@ -21,7 +21,7 @@ for RECIPE_PATH in `ls qemu/*.yaml`; do
         (set -x; kameleon build $ROOT_PROJECT/$RECIPE_PATH --build-path $BUILD_PATH --script --enable-cache)
         if [ $? -eq 0 ]; then
             mkdir -p $ROOTFS_PATH
-            mv $BUILD_PATH/$RECIPE_NAME/*.tar.xz $ROOTFS_PATH/
+            mv $BUILD_PATH/$RECIPE_NAME/*.tar.{gz,xz} $ROOTFS_PATH/
         fi
     fi
 done
