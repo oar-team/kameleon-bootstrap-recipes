@@ -2,15 +2,15 @@
 # vim: softtabstop=2 shiftwidth=2 expandtab fenc=utf-8 cc=81 tw=80
 #==============================================================================
 #
-# DESCRIPTION: Debian 9 (Stretch) base system built with qemu-kvm.
+# DESCRIPTION: Debian sid base system built with qemu-kvm.
 #
 #==============================================================================
 ---
-extend: debian8.yaml
+extend: debian-testing.yaml
 
 global:
   # Distribution
-  release: stretch
+  release: sid
 
   bootstrap_packages: locales openssh-server linux-image-$$kernel_arch systemd systemd-sysv
 
