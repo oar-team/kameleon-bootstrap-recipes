@@ -25,3 +25,7 @@ for RECIPE_PATH in `ls qemu/*.yaml`; do
         fi
     fi
 done
+
+
+# Push images to kameleon website
+# rsync -avh rootfs/ oar-docmaster.website:~/kameleon-doc/rootfs/x86_64
