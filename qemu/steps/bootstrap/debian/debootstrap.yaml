@@ -10,7 +10,7 @@
       debootstrap \
       $VARIANT \
       --no-check-gpg \
-      --arch=$$kernel_arch \
+      --arch=$$debian_arch \
       --include="$$include_pkg" \
       $$release \
       $$rootfs \

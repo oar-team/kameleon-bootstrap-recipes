@@ -23,9 +23,9 @@ global:
 
   # archives.fedoraproject.org is too slow
   mirror_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Everything/$$arch/os/
-  iso_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Fedora/$$arch/iso/$$iso_filename
+  iso_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Fedora/$$iso_arch/iso/$$iso_filename
 
-  iso_filename: Fedora-$${release}-$${arch}-netinst.iso
+  iso_filename: Fedora-$${release}-$${iso_arch}-netinst.iso
   setup_packages: kernel dracut dracut-kernel
 
 # Bootstrap the new system and create the 'in_context'
