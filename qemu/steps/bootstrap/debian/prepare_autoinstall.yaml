@@ -9,9 +9,13 @@
       fi
 
 - customize_autoinstall_script:
-  - exec_local: sed -i s'|RELEASE=\(.*\)|RELEASE=$$release|'g $$http_directory/autoinstall.sh
-  - exec_local: sed -i s'|PACKAGES=\(.*\)|PACKAGES="$$bootstrap_packages"|'g $$http_directory/autoinstall.sh
-  - exec_local: sed -i s'|REPOSITORY=\(.*\)|REPOSITORY="$$repository"|'g $$http_directory/autoinstall.sh
+  - exec_local: sed -i s'|^RELEASE=\(.*\)|RELEASE=$$release|'g $$http_directory/autoinstall.sh
+  - exec_local: sed -i s'|^PACKAGES=\(.*\)|PACKAGES="$$bootstrap_packages"|'g $$http_directory/autoinstall.sh
+  - exec_local: sed -i s'|^REPOSITORY=\(.*\)|REPOSITORY="$$repository"|'g $$http_directory/autoinstall.sh
+  - exec_local: sed -i s'|^QEMU_ARCH=\(.*\)|QEMU_ARCH="$$qemu_arch"|'g $$http_directory/autoinstall.sh
+  - exec_local: sed -i s'|^DEBIAN_ARCH=\(.*\)|DEBIAN_ARCH="$$debian_arch"|'g $$http_directory/autoinstall.sh
+  - exec_local: sed -i s'|^DEBIAN_KERNEL_ARCH=\(.*\)|DEBIAN_KERNEL_ARCH="$$debian_kernel_arch"|'g $$http_directory/autoinstall.sh
+  - exec_local: cat $$http_directory/autoinstall.sh
 
 - write_boot_command:
   - write_local:
