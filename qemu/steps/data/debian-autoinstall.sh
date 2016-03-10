@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 fail() {
   echo "$@"
@@ -28,8 +29,11 @@ REPOSITORY="http://http.debian.net/debian/"
 HOSTNAME="localhost"
 LOCALES="POSIX C en_US fr_FR de_DE"
 LANG="en_US.UTF-8"
-ARCH="$(uname -r | tr '-' '\n' | tail -n 1)"
-PACKAGES="less,locales,vim,openssh-server,linux-image-$ARCH,extlinux"
+CURRENT_ARCH="$(uname -m)"
+QEMU_ARCH="$CURRENT_ARCH"
+DEBIAN_ARCH="$(dpkg --print-architecture)"
+DEBIAN_KERNEL_ARCH="$DEBIAN_ARCH"
+PACKAGES="less,locales,vim,openssh-server,linux-image-$DEBIAN_KERNEL_ARCH,extlinux"
 
 
 # Format partition
@@ -44,7 +48,16 @@ mkfs.ext4 ${DISK}1
 mkdir -p $MNT
 mount ${DISK}1 $MNT
 
-debootstrap --arch=$ARCH --include="$PACKAGES" $RELEASE $MNT $REPOSITORY
+if [ $CURRENT_ARCH == $QEMU_ARCH ]; then
+  debootstrap --arch=$DEBIAN_ARCH --include="$PACKAGES" $RELEASE $MNT $REPOSITORY
+  CHROOT_CMD="chroot $MNT"
+else
+  apt-get install -y qemu-user-static
+  debootstrap --foreign --arch=$DEBIAN_ARCH --include="$PACKAGES" $RELEASE $MNT $REPOSITORY
+  cp /usr/bin/qemu-$QEMU_ARCH-static $MNT/usr/bin/
+  CHROOT_CMD="chroot $MNT /usr/bin/qemu-$QEMU_ARCH-static /bin/bash"
+  $CHROOT_CMD /debootstrap/debootstrap --second-stage
+fi
 
 #Setting Hostname, network and lang
 echo $HOSTNAME >> $MNT/etc/hostname
@@ -69,8 +82,12 @@ test -f $MNT/etc/mtab || cat /proc/mounts > $MNT/etc/mtab
 cat /etc/resolv.conf > $MNT/etc/resolv.conf
 
 # Configure locales
-chroot $MNT /bin/bash -c "test ! -f /etc/locale.gen || (echo $LOCALES | tr ' ' '\n' | xargs -I {} sed -i 's/^#{}/{}/' /etc/locale.gen)"
-chroot $MNT locale-gen
+if ! [ -f $MNT/etc/locale.gen ]; then 
+  for l in $LOCALES; do
+    sed -i -e "s/^#$l/$l/" $MNT/etc/locale.gen
+  done
+fi
+$CHROOT_CMD /usr/sbin/locale-gen
 
 #Install Boot Loader
 mkdir -p $MNT/boot/extlinux

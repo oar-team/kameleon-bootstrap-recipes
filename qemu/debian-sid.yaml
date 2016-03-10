@@ -12,8 +12,6 @@ global:
   # Distribution
   release: sid
 
-  bootstrap_packages: locales openssh-server linux-image-$$kernel_arch systemd systemd-sysv
-
 bootstrap:
   - "@base"
 

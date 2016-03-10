@@ -12,7 +12,7 @@ global:
   # Distribution
   release: jessie
 
-  bootstrap_packages: locales openssh-server linux-image-$$kernel_arch systemd systemd-sysv
+  bootstrap_packages: locales openssh-server linux-image-$$debian_kernel_arch systemd systemd-sysv
 
 bootstrap:
   - "@base"

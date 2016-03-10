@@ -4,7 +4,7 @@
 - boot_timeout: 5
 
 - start_qemu_vm:
-  - check_cmd_local: qemu-system-$$qemu_arch
+  - check_cmd_local: qemu-system-$$qemu_iso_arch
   - check_cmd_local: socat
   - check_cmd_local: ruby
   - exec_local: echo "Starting qemu..."
@@ -20,7 +20,7 @@
       VNC_PORT=$(( $(__find_free_port 5900 5910) - 5900 ))
       echo "VNC port: $VNC_PORT"
   - exec_local: |
-      qemu-system-$$qemu_arch $ENABLE_KVM \
+      qemu-system-$$qemu_iso_arch $ENABLE_KVM \
         -cdrom "$$iso_path" \
         -hda $$qemu_image_disk \
         -smp $${qemu_cpu} \

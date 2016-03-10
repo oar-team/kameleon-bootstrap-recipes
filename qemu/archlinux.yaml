@@ -20,7 +20,7 @@ global:
     - $$distrib
 
   mirror_url: http://mir.archlinux.fr
-  iso_filename: debian-jessie-$${arch}-live.iso
+  iso_filename: debian-jessie-$${iso_arch}-live.iso
   iso_url: http://kameleon.imag.fr/iso/$$iso_filename
   iso_path: $$kameleon_cwd/$$iso_filename
 
