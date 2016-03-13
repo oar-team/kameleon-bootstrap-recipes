@@ -2,22 +2,33 @@
 # vim: softtabstop=2 shiftwidth=2 expandtab fenc=utf-8 cc=81 tw=80
 #==============================================================================
 #
-# DESCRIPTION: Debian 8 (Jessie) base system built with qemu-kvm.
+# DESCRIPTION: Debian 8 (Jessie) system for arm64 built with qemu-kvm +
+# qemu-user-static.
 #
 #==============================================================================
 ---
-extend: debian8.yaml
-
+extend: debian-testing.yaml
+# Global variables use by Kameleon engine and the steps
 global:
-  arch: aarch64
-  iso_arch: x86_64
-  debian_arch: arm64
+  release: jessie
 
+  arch: aarch64
+  debian_arch: arm64
+  debian_kernel_arch: $$debian_arch
+
+  in_context:
+    cmd: ssh -F $$ssh_config_file $${kameleon_recipe_name} -t chroot $$rootfs /usr/bin/qemu-$${arch}-static /bin/bash
+    workdir: /root/kameleon_workdir
+    proxy_cache: 10.0.2.2
+
+# Bootstrap the new system and create the 'in_context'
 bootstrap:
   - "@base"
 
+#== Install and configuration steps
 setup:
   - "@base"
 
+#== Export the generated appliance in the format of your choice
 export:
   - "@base"
