@@ -1,7 +1,6 @@
 - boot_timeout: 30
 - shutdown_timeout: 10
 
-
 - start_qemu_vm:
   - on_checkpoint: redo
   - check_cmd_local: qemu-system-$$qemu_arch
@@ -26,7 +25,9 @@
         echo "VNC port: $VNC_PORT"
   - exec_local: |
         qemu-system-$$qemu_arch $ENABLE_KVM \
-          -drive file="$$qemu_image_disk",cache=unsafe,media=disk,if=virtio,id=drive0 \
+          -cdrom "$$iso_path" \
+          -hda $$qemu_image_disk \
+          -smp $${qemu_cpu} \
           -smp $${qemu_cpu} \
           -m $$qemu_memory_size \
           -rtc base=localtime \
@@ -52,8 +53,8 @@
   - on_checkpoint: redo
   - check_cmd_local: socat
   - on_setup_clean:
-    - exec_in: echo "Shutting down virtual machine"
-    - exec_in: shutdown -h now
+    - exec_out: echo "Shutting down virtual machine"
+    - exec_out: shutdown -h now
     - exec_local: |
         if [ -f $$qemu_pidfile ]; then
           _QEMU_PID=$(cat $$qemu_pidfile)
