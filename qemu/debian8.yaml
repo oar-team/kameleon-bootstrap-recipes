@@ -11,8 +11,8 @@ extend: debian7.yaml
 global:
   # Distribution
   release: jessie
-
-  bootstrap_packages: locales openssh-server linux-image-$$debian_kernel_arch systemd systemd-sysv
+  release_number: 8.3.0
+  iso_location: release
 
 bootstrap:
   - "@base"
