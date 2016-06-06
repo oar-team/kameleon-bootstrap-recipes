@@ -11,8 +11,7 @@ extend: debian7.yaml
 global:
   # Distribution
   release: jessie
-  release_number: 8.3.0
-  iso_location: release
+  release_number: 8.4.0
 
 bootstrap:
   - "@base"

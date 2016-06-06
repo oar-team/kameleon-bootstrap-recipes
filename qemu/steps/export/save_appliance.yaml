@@ -13,7 +13,7 @@
       else
         EXPORT_OPTS=""
       fi
-  - exec_local: |
+  - exec_local: |-
       python $$export_appliance_script $$qemu_image_disk \
         -o $$output_filename \
         --formats $$output_formats \
