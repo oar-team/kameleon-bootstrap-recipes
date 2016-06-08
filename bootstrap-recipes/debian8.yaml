@@ -2,30 +2,24 @@
 # vim: softtabstop=2 shiftwidth=2 expandtab fenc=utf-8 cc=81 tw=80
 #==============================================================================
 #
-# DESCRIPTION: Fedora 23 base system built with qemu-kvm.
+# DESCRIPTION: Debian 8 (Jessie) base system built with qemu-kvm.
 #
 #==============================================================================
 ---
-extend: fedora-base.yaml
+extend: debian-netinstall.yaml
 
 global:
-  release: 23
+  distrib: debian
+  kernel_arch: amd64
+  release: jessie
+  release_number: 8.4.0
+  iso_location: release
 
-  # Include specific steps
-  include_steps:
-    - $$distrib/$$release
-    - $$distrib/22
-    - $$distrib
-    - "centos"
-
-# Bootstrap the new system and create the 'in_context'
 bootstrap:
   - "@base"
 
-# Install and configuration steps
 setup:
   - "@base"
 
-# Export the generated appliance in the format of your choice
 export:
   - "@base"
