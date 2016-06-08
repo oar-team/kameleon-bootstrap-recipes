@@ -6,36 +6,16 @@
 #
 #==============================================================================
 ---
-extend: centos6.yaml
+extend: fedora-base.yaml
 
-# Global variables use by Kameleon engine and the steps
 global:
-  # Distribution
-  distrib: fedora
   release: 20
 
-  ## System variables. Required by kameleon engine
-  # Include specific steps
-  include_steps:
-    - $$distrib/$$release
-    - $$distrib
-    - "centos"
-
-  # archives.fedoraproject.org is too slow
-  mirror_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Everything/$$arch/os/
-  iso_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Fedora/$$iso_arch/iso/$$iso_filename
-
-  iso_filename: Fedora-$${release}-$${iso_arch}-netinst.iso
-  setup_packages: kernel dracut dracut-kernel
-
-# Bootstrap the new system and create the 'in_context'
 bootstrap:
   - "@base"
 
-# Install and configuration steps
 setup:
   - "@base"
 
-# Export the generated appliance in the format of your choice
 export:
   - "@base"

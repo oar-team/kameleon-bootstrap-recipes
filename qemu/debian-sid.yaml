@@ -6,10 +6,9 @@
 #
 #==============================================================================
 ---
-extend: debian-testing.yaml
+extend: debian-debootstrap.yaml
 
 global:
-  # Distribution
   release: sid
 
 bootstrap:

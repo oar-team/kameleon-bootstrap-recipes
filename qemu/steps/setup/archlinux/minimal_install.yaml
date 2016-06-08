@@ -1,5 +1,5 @@
 
-- setup_packages: extlinux
+- setup_packages: syslinux
 
 - set_root_password:
   - exec_in: echo -n 'root:$$root_password' | chpasswd

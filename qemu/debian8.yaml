@@ -6,12 +6,15 @@
 #
 #==============================================================================
 ---
-extend: debian7.yaml
+extend: debian-netinstall.yaml
 
 global:
   # Distribution
+  distrib: debian
+  kernel_arch: amd64
   release: jessie
   release_number: 8.4.0
+  iso_location: release
 
 bootstrap:
   - "@base"

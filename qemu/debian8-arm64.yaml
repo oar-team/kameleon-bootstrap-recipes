@@ -7,8 +7,7 @@
 #
 #==============================================================================
 ---
-extend: debian-testing.yaml
-# Global variables use by Kameleon engine and the steps
+extend: debian-debootstrap.yaml
 global:
   release: jessie
 
@@ -21,14 +20,11 @@ global:
     workdir: /root/kameleon_workdir
     proxy_cache: 10.0.2.2
 
-# Bootstrap the new system and create the 'in_context'
 bootstrap:
   - "@base"
 
-#== Install and configuration steps
 setup:
   - "@base"
 
-#== Export the generated appliance in the format of your choice
 export:
   - "@base"

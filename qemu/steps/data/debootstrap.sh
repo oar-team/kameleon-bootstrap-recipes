@@ -62,7 +62,7 @@ test -f $MNT/etc/mtab || cat /proc/mounts > $MNT/etc/mtab
 cat /etc/resolv.conf > $MNT/etc/resolv.conf
 
 # Configure locales
-if ! [ -f $MNT/etc/locale.gen ]; then
+if [ -f $MNT/etc/locale.gen ]; then
   for l in $LOCALES; do
     sed -i -e "s/^#$l/$l/" $MNT/etc/locale.gen
   done

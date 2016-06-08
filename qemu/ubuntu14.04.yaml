@@ -6,12 +6,10 @@
 #
 #==============================================================================
 ---
-extend: ubuntu12.04.yaml
+extend: ubuntu-base.yaml
 
 global:
-  # Distribution
   release: trusty
-
 
 bootstrap:
   - "@base"

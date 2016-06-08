@@ -6,22 +6,21 @@
 #
 #==============================================================================
 ---
-extend: centos6.yaml
+extend: centos-netinstall.yaml
 
-# Global variables use by Kameleon engine and the steps
 global:
   # Distribution
-  release: 7
-  iso_filename: CentOS-7-$${iso_arch}-NetInstall-1503.iso
+  release_major: 7
+  release_minor: 2
+  release_date: 1511
+  release: $${release_major}.$${release_minor}.$${release_date}
+  iso_filename: CentOS-7-$${iso_arch}-NetInstall-$${release_date}.iso
 
-# Bootstrap the new system and create the 'in_context'
 bootstrap:
   - "@base"
 
-# Install and configuration steps
 setup:
   - "@base"
 
-# Export the generated appliance in the format of your choice
 export:
   - "@base"

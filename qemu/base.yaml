@@ -18,12 +18,14 @@ env:
 
 # Global variables use by Kameleon engine and the steps
 global:
-  root_password: kameleon
   # Architecture for the target system
   arch: x86_64
   # Architecture for the bootstrap iso image
   iso_arch: x86_64
+  # Default hostname
   hostname: kameleon-$$distrib
+  # Default root password
+  root_password: kameleon
 
   ## System variables. Required by kameleon engine
   # Include specific steps

@@ -1,17 +1,6 @@
 - remove_old_kernels:
   - exec_in: rpm -q kernel | head -n -1 | xargs -I {} rpm -e {}
 
-- packages_to_remove: >
-    aic94xx-firmware bfa-firmware kernel-firmware ql2100-firmware
-    ql2200-firmware ql23xx-firmware ql2400-firmware ql2500-firmware
-    iptables-ipv6 nfs-utils nfs-utils-lib iscsi-initiator-utils
-    device-mapper-multipath-libs device-mapper-multipath audit
-    selinux-policy kpartx lvm2 lvm2-libs
-
-# Remove some packages
-- clean_packages:
-  - exec_in: yum remove -y $$packages_to_remove
-
 - clean_yum_cache:
   - exec_in: echo "Cleaning old yum repodata."
   - exec_in: yum clean all -y

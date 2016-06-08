@@ -6,11 +6,9 @@
 #
 #==============================================================================
 ---
-extend: fedora20.yaml
+extend: fedora-base.yaml
 
-# Global variables use by Kameleon engine and the steps
 global:
-  # Distribution
   release: 21
 
   mirror_url: http://mirrors.ircam.fr/pub/fedora/linux/releases/$$release/Server/$$arch/os/
@@ -18,14 +16,11 @@ global:
 
   iso_filename: Fedora-Server-netinst-$${iso_arch}-$${release}.iso
 
-# Bootstrap the new system and create the 'in_context'
 bootstrap:
   - "@base"
 
-# Install and configuration steps
 setup:
   - "@base"
 
-# Export the generated appliance in the format of your choice
 export:
   - "@base"

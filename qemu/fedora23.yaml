@@ -6,11 +6,9 @@
 #
 #==============================================================================
 ---
-extend: fedora22.yaml
+extend: fedora-base.yaml
 
-# Global variables use by Kameleon engine and the steps
 global:
-  # Distribution
   release: 23
 
   # Include specific steps
