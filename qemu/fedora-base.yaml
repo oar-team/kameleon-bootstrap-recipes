@@ -2,7 +2,7 @@
 # vim: softtabstop=2 shiftwidth=2 expandtab fenc=utf-8 cc=81 tw=80
 #==============================================================================
 #
-# DESCRIPTION: Fedora 20 base system built with qemu-kvm.
+# DESCRIPTION: Fedora generic base system built with qemu-kvm.
 #
 #==============================================================================
 ---
@@ -21,10 +21,12 @@ global:
 
   # archives.fedoraproject.org is too slow
   mirror_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Everything/$$arch/os/
-  iso_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Fedora/$$iso_arch/iso/$$iso_filename
+  iso_url: http://archives.fedoraproject.org/pub/archive/$$distrib/linux/releases/$$release/Server/$$iso_arch/iso/$$iso_filename
 
-  iso_filename: Fedora-$${release}-$${iso_arch}-netinst.iso
+  iso_filename: Fedora-Server-netinst-$${iso_arch}-$${release}.iso
   setup_packages: kernel dracut dracut-kernel
+
+  base_kickstart_path: $$kameleon_data_dir/$${distrib}$${release}-ks.cfg
 
 bootstrap:
   - "@base"

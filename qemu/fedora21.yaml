@@ -11,11 +11,6 @@ extend: fedora-base.yaml
 global:
   release: 21
 
-  mirror_url: http://mirrors.ircam.fr/pub/fedora/linux/releases/$$release/Server/$$arch/os/
-  iso_url: http://mirrors.ircam.fr/pub/fedora/linux/releases/$$release/Server/$$iso_arch/iso/$$iso_filename
-
-  iso_filename: Fedora-Server-netinst-$${iso_arch}-$${release}.iso
-
 bootstrap:
   - "@base"
 
