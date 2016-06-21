@@ -4,6 +4,7 @@
 #
 # DESCRIPTION: Fedora generic base system built with qemu-kvm.
 #
+# USAGE: Select the release
 #==============================================================================
 ---
 extend: centos-netinstall.yaml

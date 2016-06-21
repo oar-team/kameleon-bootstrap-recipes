@@ -5,17 +5,25 @@
 # DESCRIPTION: Debian generic recipe built with qemu-kvm + debootstrap.
 #
 # USAGE:
-#   Select the distribution: debian or ubuntu
-#   Select the release: wheezy, testing, sid...
-#   Select the architechture: default amd64
+#   Select directly in this recipe:
+#
+#   - distribution: debian or ubuntu
+#   - release: wheezy, testing, sid...
+#   - architechture: default amd64
+#
+#   or, override the globals directly in CLI:
+#
+#   kameleon build --global distrib:debian,release:wheezy
+#
+#   or extends this recipe with your own and override those variable in it.
 #
 #==============================================================================
 ---
 extend: base.yaml
 
 global:
-  # distrib: debian
-  # release: testing
+  distrib: debian
+  release: testing
   debian_arch: amd64
   debian_kernel_arch: $$debian_arch
 
