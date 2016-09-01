@@ -13,7 +13,7 @@
 #
 #   or, override the globals directly in CLI:
 #
-#   kameleon build --global distrib:debian,release:wheezy
+#   kameleon build --global distrib:debian --global release:wheezy
 #
 #   or extends this recipe with your own and override those variable in it.
 #
