@@ -3,14 +3,14 @@
 
 - start_qemu_vm:
   - on_checkpoint: redo
-  - check_cmd_local: qemu-system-$$qemu_arch
+  - check_cmd_local: qemu-system-$${qemu_arch}
   - exec_local: echo "Starting qemu..."
   - exec_local: |
-      if [ "$$qemu_enable_kvm" = "true" ]; then
+      if [ "$${qemu_enable_kvm}" = "true" ]; then
         ENABLE_KVM="-enable-kvm -cpu host"
-        BOOT_TIMEOUT=$$boot_timeout
+        BOOT_TIMEOUT=$${boot_timeout}
       else
-        BOOT_TIMEOUT=$(($$boot_timeout*2))
+        BOOT_TIMEOUT=$(($${boot_timeout}*2))
       fi
   - exec_local: |
         if [ -f "vm_state_to_load.txt" ]
@@ -24,22 +24,22 @@
         VNC_PORT=$(( $(__find_free_port 5900 5910) - 5900 ))
         echo "VNC port: $VNC_PORT"
   - exec_local: |
-        qemu-system-$$qemu_arch $ENABLE_KVM \
-          -cdrom "$$iso_path" \
-          -hda $$qemu_image_disk \
+        qemu-system-$${qemu_arch} $ENABLE_KVM \
+          -cdrom "$${iso_path}" \
+          -hda $${qemu_image_disk} \
           -smp $${qemu_cpu} \
           -smp $${qemu_cpu} \
-          -m $$qemu_memory_size \
+          -m $${qemu_memory_size} \
           -rtc base=localtime \
           -net nic,model=virtio -net user \
-          -redir tcp:$$qemu_ssh_port::22 \
-          -monitor unix:$$qemu_monitor_socket,server,nowait \
-          -pidfile $$qemu_pidfile \
+          -redir tcp:$${qemu_ssh_port}::22 \
+          -monitor unix:$${qemu_monitor_socket},server,nowait \
+          -pidfile $${qemu_pidfile} \
           -daemonize -vnc :$VNC_PORT $LOADVM
   - exec_local: |
         SSH_AVAILABLE=0
         TIMEOUT=$(( $(date +%s) + $BOOT_TIMEOUT ))
-        until timeout 5 ssh -q -F $$ssh_config_file -o ConnectionAttempts=1  $${kameleon_recipe_name} -t true && SSH_AVAILABLE=1 || [ $(date +%s) -gt $TIMEOUT ];
+        until timeout 5 ssh -q -F $${ssh_config_file} -o ConnectionAttempts=1  $${kameleon_recipe_name} -t true && SSH_AVAILABLE=1 || [ $(date +%s) -gt $TIMEOUT ];
         do
           echo -en "\rWaiting for SSH to become available for out_context...($(( TIMEOUT - $(date +%s) ))s)"
           sleep 1
@@ -56,30 +56,30 @@
     - exec_out: echo "Shutting down virtual machine"
     - exec_out: shutdown -h now
     - exec_local: |
-        if [ -f $$qemu_pidfile ]; then
-          _QEMU_PID=$(cat $$qemu_pidfile)
+        if [ -f $${qemu_pidfile} ]; then
+          _QEMU_PID=$(cat $${qemu_pidfile})
           if ps -p $_QEMU_PID > /dev/null; then
-            if [ -S $$qemu_monitor_socket ]; then
+            if [ -S $${qemu_monitor_socket} ]; then
               NEXT_WAIT_TIME=0
-              echo system_powerdown | socat - UNIX-CONNECT:$$qemu_monitor_socket || true
-              while ps -p $_QEMU_PID > /dev/null && [ $NEXT_WAIT_TIME -lt $$shutdown_timeout ];
+              echo system_powerdown | socat - UNIX-CONNECT:$${qemu_monitor_socket} || true
+              while ps -p $_QEMU_PID > /dev/null && [ $NEXT_WAIT_TIME -lt $${shutdown_timeout} ];
               do
                 sleep 1
-                echo -en "\rWaiting for qemu virtual machine to shutdown...($(( $$shutdown_timeout - 1 - NEXT_WAIT_TIME++ ))s)"
+                echo -en "\rWaiting for qemu virtual machine to shutdown...($(( $${shutdown_timeout} - 1 - NEXT_WAIT_TIME++ ))s)"
               done
             fi
             if ps -p $_QEMU_PID > /dev/null; then
-              if [ -S $$qemu_monitor_socket ]; then
+              if [ -S $${qemu_monitor_socket} ]; then
                 echo "  ~> Failed"
               fi
               echo "Killing QEMU (pid: $_QEMU_PID)..."
               kill -9 "$_QEMU_PID"
             else
-              if [ -S $$qemu_monitor_socket ]; then
+              if [ -S $${qemu_monitor_socket} ]; then
                 echo "  ~> Done"
               fi
             fi
-            rm -f $$qemu_pidfile
+            rm -f $${qemu_pidfile}
           fi
         fi
-        rm -f $$qemu_monitor_socket
+        rm -f $${qemu_monitor_socket}

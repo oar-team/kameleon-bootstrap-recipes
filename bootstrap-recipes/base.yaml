@@ -23,27 +23,27 @@ global:
   # Architecture for the bootstrap iso image
   iso_arch: x86_64
   # Default hostname
-  hostname: kameleon-$$distrib
+  hostname: kameleon-$${distrib}
   # Default root password
   root_password: kameleon
 
   ## System variables. Required by kameleon engine
   # Include specific steps
   include_steps:
-    - $$distrib/$$release
-    - $$distrib
+    - $${distrib}/$${release}
+    - $${distrib}
 
   ## QEMU options
   qemu_enable_kvm: "$(egrep '(vmx|svm)' /proc/cpuinfo > /dev/null && echo true)"
   qemu_cpu: 2
   qemu_memory_size: 768
-  qemu_monitor_socket: $$kameleon_cwd/qemu_monitor.socket
+  qemu_monitor_socket: $${kameleon_cwd}/qemu_monitor.socket
   qemu_ssh_port: 55423
   qemu_arch: x86_64
-  qemu_iso_arch: $$iso_arch
+  qemu_iso_arch: $${iso_arch}
   qemu_image_size: 10G
-  qemu_image_disk: $$kameleon_cwd/base_$$kameleon_recipe_name.qcow2
-  qemu_pidfile: $$kameleon_cwd/qemu.pid
+  qemu_image_disk: $${kameleon_cwd}/base_$${kameleon_recipe_name}.qcow2
+  qemu_pidfile: $${kameleon_cwd}/qemu.pid
 
   # rootfs options
   disk_device: /dev/sda
@@ -51,29 +51,29 @@ global:
   filesystem_type: ext4
 
   # appliance options
-  image_disk: $$kameleon_cwd/base_$$kameleon_recipe_name
+  image_disk: $${kameleon_cwd}/base_$${kameleon_recipe_name}
   image_format: qcow2
   # Allowed formats are: tar.gz, tar.bz2, tar.xz, tar.lzo, qcow, qcow2, qed, vdi, raw, vmdk
   appliance_formats: tar.xz
-  appliance_filename: "$$kameleon_cwd/$${kameleon_recipe_name}"
+  appliance_filename: "$${kameleon_cwd}/$${kameleon_recipe_name}"
   appliance_tar_excludes: >-
     ./etc/fstab ./root/.bash_history ./root/kameleon_workdir ./root/.ssh
     ./var/tmp/* ./tmp/* ./var/log/* ./dev/* ./proc/* ./run/*
     ./sys/* ./root/.rpmdb ./boot/extlinux ./boot/grub ./boot/grub2
 
-  http_directory: $$kameleon_cwd/http_dir
-  http_script: $$kameleon_cwd/simple_http_server.py
+  http_directory: $${kameleon_cwd}/http_dir
+  http_script: $${kameleon_cwd}/simple_http_server.py
   http_port: 15364
-  http_pid:  $$kameleon_cwd/http.pid
+  http_pid:  $${kameleon_cwd}/http.pid
 
-  ssh_config_file: $$kameleon_cwd/ssh_config
+  ssh_config_file: $${kameleon_cwd}/ssh_config
   out_context:
-    cmd: ssh -F $$ssh_config_file $${kameleon_recipe_name} -t /bin/bash
+    cmd: ssh -F $${ssh_config_file} $${kameleon_recipe_name} -t /bin/bash
     workdir: /root/kameleon_workdir
     proxy_cache: 10.0.2.2
 
   in_context:
-    cmd: ssh -F $$ssh_config_file $${kameleon_recipe_name} -t /bin/bash
+    cmd: ssh -F $${ssh_config_file} $${kameleon_recipe_name} -t /bin/bash
     workdir: /root/kameleon_workdir
     proxy_cache: 10.0.2.2
 
@@ -99,7 +99,7 @@ setup:
 export:
   - disable_checkpoint
   - save_appliance:
-    - output_filename: $$appliance_filename
-    - output_formats: $$appliance_formats
+    - output_filename: $${appliance_filename}
+    - output_formats: $${appliance_formats}
     - tar_compression_level: "9"
-    - tar_excludes: $$appliance_tar_excludes
+    - tar_excludes: $${appliance_tar_excludes}

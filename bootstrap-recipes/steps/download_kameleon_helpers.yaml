@@ -2,8 +2,8 @@
 
 - download_kameleon_helpers:
   - download_file_local:
-    - $$kameleon_helpers_url
-    - $$kameleon_cwd/kameleon-helpers.tar.gz
+    - $${kameleon_helpers_url}
+    - $${kameleon_cwd}/kameleon-helpers.tar.gz
 
 - extract_kameleon_helpers_archive:
-  - exec_local: tar xvf $$kameleon_cwd/kameleon-helpers.tar.gz --strip-components 1 --exclude='*/README.md'
+  - exec_local: tar xvf $${kameleon_cwd}/kameleon-helpers.tar.gz --strip-components 1 --exclude='*/README.md'
