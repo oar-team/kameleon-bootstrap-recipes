@@ -1,3 +1,6 @@
+# DEPRECATED
+use https://github.com/oar-team/kameleon-recipes/ instead
+
 Kameleon bootstrap recipes
 --------------------------
 
